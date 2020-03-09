@@ -23,7 +23,7 @@ public class SealBounce : MonoBehaviour
     {
         collision.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
         collision.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * upBounceSpeed, ForceMode.Impulse);
-        collision.gameObject.GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * forwardBounceSpeed, ForceMode.Impulse);
+        // collision.gameObject.GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * forwardBounceSpeed, ForceMode.Impulse);
 
     }
 }

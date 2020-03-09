@@ -10,7 +10,10 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 5.0f;
     public float turnSpeed = 45.0f;
     public float slopeSpeed = 7.0f;
+    public float knockSpeed = 100.0f;
     private bool isOnSlope = false;
+    private bool hit = false;
+    private Rigidbody rb;
 
     public PhysicMaterial slipperyMaterial;
     public PhysicMaterial normalMaterial;
@@ -19,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -37,9 +40,17 @@ public class PlayerMovement : MonoBehaviour
         {
             GetComponent<SphereCollider>().material = slipperyMaterial;
             horizontalInput = Input.GetAxis("Horizontal");
-            GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * Time.deltaTime * slopeSpeed, ForceMode.Impulse);
+            rb.AddRelativeForce(Vector3.forward * Time.deltaTime * slopeSpeed, ForceMode.Impulse);
             // transform.Translate(Vector3.forward * Time.deltaTime * slopeSpeed);
             transform.Translate(Vector3.right * Time.deltaTime * moveSpeed * horizontalInput);
+        }
+
+        if (hit == true)
+        {
+            rb.velocity = Vector3.zero;
+            rb.AddRelativeForce(Vector3.up * Time.deltaTime * knockSpeed, ForceMode.Impulse);
+            rb.AddRelativeForce(Vector3.back * Time.deltaTime * knockSpeed, ForceMode.Impulse);
+            hit = false;
         }
     }
 
@@ -60,6 +71,11 @@ public class PlayerMovement : MonoBehaviour
         if (other.gameObject.CompareTag("EternalIce"))
         {
             text.text = "Congratulations! You win!";
+            Destroy(other.gameObject);
+        }
+        else if (other.gameObject.CompareTag("Icicle"))
+        {
+            hit = true;
             Destroy(other.gameObject);
         }
         else
