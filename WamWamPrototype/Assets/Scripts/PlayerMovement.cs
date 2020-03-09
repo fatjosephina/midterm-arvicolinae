@@ -1,0 +1,70 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class PlayerMovement : MonoBehaviour
+{
+    private float horizontalInput;
+    private float forwardInput;
+    public float moveSpeed = 5.0f;
+    public float turnSpeed = 45.0f;
+    public float slopeSpeed = 7.0f;
+    private bool isOnSlope = false;
+
+    public PhysicMaterial slipperyMaterial;
+    public PhysicMaterial normalMaterial;
+    public Text text;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (isOnSlope == false)
+        {
+            GetComponent<SphereCollider>().material = normalMaterial;
+            horizontalInput = Input.GetAxis("Horizontal");
+            forwardInput = Input.GetAxis("Vertical");
+            transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed * forwardInput);
+            transform.Rotate(Vector3.up, Time.deltaTime * turnSpeed * horizontalInput);
+        }
+        else
+        {
+            GetComponent<SphereCollider>().material = slipperyMaterial;
+            horizontalInput = Input.GetAxis("Horizontal");
+            GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * Time.deltaTime * slopeSpeed, ForceMode.Impulse);
+            // transform.Translate(Vector3.forward * Time.deltaTime * slopeSpeed);
+            transform.Translate(Vector3.right * Time.deltaTime * moveSpeed * horizontalInput);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!collision.gameObject.CompareTag("Slope"))
+        {
+            isOnSlope = false;
+        }
+        else
+        {
+            isOnSlope = true;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("EternalIce"))
+        {
+            text.text = "Congratulations! You win!";
+            Destroy(other.gameObject);
+        }
+        else
+        {
+            Debug.Log("Trigger enter");
+        }
+    }
+}
