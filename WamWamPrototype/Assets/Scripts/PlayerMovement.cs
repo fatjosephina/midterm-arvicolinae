@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 5.0f;
     public float turnSpeed = 45.0f;
     public float slopeSpeed = 7.0f;
-    public float knockSpeed = 100.0f;
+    public float knockSpeed = 250.0f;
     private bool isOnSlope = false;
     private bool hit = false;
     private Rigidbody rb;
