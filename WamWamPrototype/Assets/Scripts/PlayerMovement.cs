@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isOnSlope = false;
     private bool hit = false;
     private Rigidbody rb;
+    public static bool isGameOver = false;
 
     public PhysicMaterial slipperyMaterial;
     public PhysicMaterial normalMaterial;
@@ -77,6 +78,10 @@ public class PlayerMovement : MonoBehaviour
         {
             hit = true;
             Destroy(other.gameObject);
+        }
+        else if (other.gameObject.CompareTag("Water"))
+        {
+            isGameOver = true;
         }
         else
         {

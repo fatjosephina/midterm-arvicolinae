@@ -25,29 +25,32 @@ public class CameraMovement : MonoBehaviour
 
     public void Refresh()
     {
-        if (target == null)
+        if (!PlayerMovement.isGameOver)
         {
-            Debug.LogWarning("Missing target ref !", this);
+            if (target == null)
+            {
+                Debug.LogWarning("Missing target ref !", this);
 
-            return;
-        }
+                return;
+            }
 
-        if (offsetPositionSpace == Space.Self)
-        {
-            transform.position = target.TransformPoint(offsetPosition);
-        }
-        else
-        {
-            transform.position = target.position + offsetPosition;
-        }
+            if (offsetPositionSpace == Space.Self)
+            {
+                transform.position = target.TransformPoint(offsetPosition);
+            }
+            else
+            {
+                transform.position = target.position + offsetPosition;
+            }
 
-        if (lookAt)
-        {
-            transform.LookAt(target);
-        }
-        else
-        {
-            transform.rotation = target.rotation;
+            if (lookAt)
+            {
+                transform.LookAt(target);
+            }
+            else
+            {
+                transform.rotation = target.rotation;
+            }
         }
     }
 }

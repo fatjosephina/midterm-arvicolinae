@@ -18,13 +18,23 @@ public class TurnRamp : MonoBehaviour
         
     }
 
-    private void OnCollisionEnter(Collision collision)
+    /*private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
             collision.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            collision.gameObject.GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * Time.deltaTime * turnSpeed, ForceMode.Impulse);
             collision.gameObject.transform.Rotate(0, -90, 0);
+            collision.gameObject.GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * Time.deltaTime * turnSpeed, ForceMode.Impulse);
+        }
+    }*/
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            other.gameObject.transform.Rotate(0, -90, 0);
+            other.gameObject.GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * Time.deltaTime * turnSpeed, ForceMode.Impulse);
         }
     }
 }
