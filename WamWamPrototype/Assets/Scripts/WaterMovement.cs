@@ -5,13 +5,11 @@ using UnityEngine;
 public class WaterMovement : MonoBehaviour
 {
     public float moveSpeed = 1.1f;
-    private bool isMovingForward;
     private int frames = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        isMovingForward = true;
     }
 
     // Update is called once per frame
@@ -22,12 +20,10 @@ public class WaterMovement : MonoBehaviour
         if (frames < 100)
         {
             transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed);
-            isMovingForward = false;
         }
         else if (frames > 100)
         {
             transform.Translate(Vector3.back * Time.deltaTime * moveSpeed);
-            isMovingForward = true;
         }
 
         /*if (frames < 50 || frames > 150)

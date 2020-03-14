@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isOnSlope = false;
     private bool hit = false;
     private Rigidbody rb;
+    private Animator PlayerAnimator;
     public static bool isGameOver = false;
 
     public PhysicMaterial slipperyMaterial;
@@ -24,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        PlayerAnimator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -52,6 +54,18 @@ public class PlayerMovement : MonoBehaviour
             rb.AddRelativeForce(Vector3.up * Time.deltaTime * knockSpeed, ForceMode.Impulse);
             rb.AddRelativeForce(Vector3.back * Time.deltaTime * knockSpeed, ForceMode.Impulse);
             hit = false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            PlayerAnimator.SetBool("forwardArrowPressed", false);
+            PlayerAnimator.SetBool("backArrowPressed", true);
+        }
+
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            PlayerAnimator.SetBool("backArrowPressed", false);
+            PlayerAnimator.SetBool("forwardArrowPressed", true);
         }
     }
 
