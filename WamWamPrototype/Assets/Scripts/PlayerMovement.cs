@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -30,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        isGameOver = false;
         rb = GetComponent<Rigidbody>();
         PlayerAnimator = GetComponent<Animator>();
     }
@@ -77,6 +79,11 @@ public class PlayerMovement : MonoBehaviour
             PlayerAnimator.SetBool("backArrowPressed", false);
             PlayerAnimator.SetBool("forwardArrowPressed", true);
         }
+
+        if (isGameOver && Input.GetKeyDown(KeyCode.Space))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -122,6 +129,7 @@ public class PlayerMovement : MonoBehaviour
         {
             isGameOver = true;
             waterSplash.Play();
+            text.text = "Press Space to restart";
         }
         else
         {
