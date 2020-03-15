@@ -8,6 +8,7 @@ TagManager:
   - EternalIce
   - Icicle
   - Water
+  - Seal
   layers:
   - Default
   - TransparentFX

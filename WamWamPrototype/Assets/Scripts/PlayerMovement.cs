@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     public float slopeSpeed = 7.0f;
     public float knockSpeed = 250.0f;
     private bool isOnSlope = false;
+    private bool isAirborne = false;
     private bool hit = false;
     private Rigidbody rb;
     private Animator PlayerAnimator;
@@ -20,6 +21,11 @@ public class PlayerMovement : MonoBehaviour
     public PhysicMaterial slipperyMaterial;
     public PhysicMaterial normalMaterial;
     public Text text;
+    public AudioSource waterSplash;
+    public AudioSource slide;
+    public AudioSource airWhoosh;
+    public AudioSource bounce;
+    public AudioSource yeehaw;
 
     // Start is called before the first frame update
     void Start()
@@ -41,6 +47,10 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
+            if (!slide.isPlaying && !isAirborne)
+            {
+                slide.Play();
+            }
             GetComponent<SphereCollider>().material = slipperyMaterial;
             horizontalInput = Input.GetAxis("Horizontal");
             rb.AddRelativeForce(Vector3.forward * Time.deltaTime * slopeSpeed, ForceMode.Impulse);
@@ -56,13 +66,13 @@ public class PlayerMovement : MonoBehaviour
             hit = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
         {
             PlayerAnimator.SetBool("forwardArrowPressed", false);
             PlayerAnimator.SetBool("backArrowPressed", true);
         }
 
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
         {
             PlayerAnimator.SetBool("backArrowPressed", false);
             PlayerAnimator.SetBool("forwardArrowPressed", true);
@@ -71,6 +81,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        isAirborne = false;
         if (!collision.gameObject.CompareTag("Slope"))
         {
             isOnSlope = false;
@@ -78,6 +89,20 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             isOnSlope = true;
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Slope"))
+        {
+            isAirborne = true;
+            airWhoosh.Play();
+            yeehaw.Play();
+        }
+        else if (collision.gameObject.CompareTag("Seal"))
+        {
+            bounce.Play();
         }
     }
 
@@ -96,6 +121,7 @@ public class PlayerMovement : MonoBehaviour
         else if (other.gameObject.CompareTag("Water"))
         {
             isGameOver = true;
+            waterSplash.Play();
         }
         else
         {
