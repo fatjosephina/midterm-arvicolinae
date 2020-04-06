@@ -9,6 +9,7 @@ TagManager:
   - Icicle
   - Water
   - Seal
+  - Fox
   layers:
   - Default
   - TransparentFX

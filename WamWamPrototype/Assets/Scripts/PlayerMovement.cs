@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -15,23 +13,27 @@ public class PlayerMovement : MonoBehaviour
     private bool isOnSlope = false;
     private bool isAirborne = false;
     private bool hit = false;
+    private float damage = 1.0f;
     private Rigidbody rb;
     private Animator PlayerAnimator;
     public static bool isGameOver = false;
+    public static bool isGameWon = false;
 
     public PhysicMaterial slipperyMaterial;
     public PhysicMaterial normalMaterial;
-    public Text text;
     public AudioSource waterSplash;
     public AudioSource slide;
     public AudioSource airWhoosh;
     public AudioSource bounce;
     public AudioSource yeehaw;
+    public FloatValue currentHealth;
+    public Signal playerHealthSignal;
 
     // Start is called before the first frame update
     void Start()
     {
         isGameOver = false;
+        isGameWon = false;
         rb = GetComponent<Rigidbody>();
         PlayerAnimator = GetComponent<Animator>();
     }
@@ -62,10 +64,19 @@ public class PlayerMovement : MonoBehaviour
 
         if (hit == true)
         {
-            rb.velocity = Vector3.zero;
-            rb.AddRelativeForce(Vector3.up * Time.deltaTime * knockSpeed, ForceMode.Impulse);
-            rb.AddRelativeForce(Vector3.back * Time.deltaTime * knockSpeed, ForceMode.Impulse);
-            hit = false;
+            currentHealth.runtimeValue -= damage;
+            playerHealthSignal.Raise();
+            if (currentHealth.runtimeValue > 0)
+            {
+                rb.velocity = Vector3.zero;
+                rb.AddRelativeForce(Vector3.up * Time.deltaTime * knockSpeed, ForceMode.Impulse);
+                rb.AddRelativeForce(Vector3.back * Time.deltaTime * knockSpeed, ForceMode.Impulse);
+            }
+            else 
+            {
+                isGameOver = true;
+            }
+                hit = false;
         }
 
         if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
@@ -78,11 +89,6 @@ public class PlayerMovement : MonoBehaviour
         {
             PlayerAnimator.SetBool("backArrowPressed", false);
             PlayerAnimator.SetBool("forwardArrowPressed", true);
-        }
-
-        if (isGameOver && Input.GetKeyDown(KeyCode.Space))
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 
@@ -117,7 +123,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.gameObject.CompareTag("EternalIce"))
         {
-            text.text = "Congratulations! You win!";
+            isGameWon = true;
             Destroy(other.gameObject);
         }
         else if (other.gameObject.CompareTag("Icicle"))
@@ -125,11 +131,16 @@ public class PlayerMovement : MonoBehaviour
             hit = true;
             Destroy(other.gameObject);
         }
+        else if (other.gameObject.CompareTag("Fox"))
+        {
+            hit = true;
+        }
         else if (other.gameObject.CompareTag("Water"))
         {
+            currentHealth.runtimeValue = 0;
+            playerHealthSignal.Raise();
             isGameOver = true;
             waterSplash.Play();
-            text.text = "Press Space to restart";
         }
         else
         {
