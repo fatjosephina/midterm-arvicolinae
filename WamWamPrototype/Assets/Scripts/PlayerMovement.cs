@@ -12,6 +12,8 @@ public class PlayerMovement : MonoBehaviour
     public float knockSpeed = 250.0f;
     private bool isOnSlope = false;
     private bool isAirborne = false;
+    private bool isOnPlatform = false;
+    private bool hasIcepop = false;
     private bool hit = false;
     private float damage = 1.0f;
     private Rigidbody rb;
@@ -19,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     public static bool isGameOver = false;
     public static bool isGameWon = false;
 
+    public GameObject snowball;
     public PhysicMaterial slipperyMaterial;
     public PhysicMaterial normalMaterial;
     public AudioSource waterSplash;
@@ -62,6 +65,15 @@ public class PlayerMovement : MonoBehaviour
             transform.Translate(Vector3.right * Time.deltaTime * moveSpeed * horizontalInput);
         }
 
+        if (!isAirborne && isOnPlatform && hasIcepop)
+        {
+            if (Input.GetKeyUp(KeyCode.Space))
+            {
+                Instantiate(snowball, transform.position + transform.forward, transform.rotation);
+
+            }
+        }
+
         if (hit == true)
         {
             currentHealth.runtimeValue -= damage;
@@ -103,6 +115,15 @@ public class PlayerMovement : MonoBehaviour
         {
             isOnSlope = true;
         }
+
+        if (collision.gameObject.CompareTag("IcePlatform"))
+        {
+            isOnPlatform = true;
+        }
+        else
+        {
+            isOnPlatform = false;
+        }
     }
 
     private void OnCollisionExit(Collision collision)
@@ -141,6 +162,11 @@ public class PlayerMovement : MonoBehaviour
             playerHealthSignal.Raise();
             isGameOver = true;
             waterSplash.Play();
+        }
+        else if (other.gameObject.CompareTag("Icepop"))
+        {
+            hasIcepop = true;
+            Destroy(other.gameObject);
         }
         else
         {

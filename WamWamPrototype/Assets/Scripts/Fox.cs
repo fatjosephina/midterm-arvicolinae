@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Fox : MonoBehaviour
 {
-    private Rigidbody foxRb;
+    public Rigidbody foxRb;
     private Transform target;
     public float chaseRadius;
     public float attackRadius;
