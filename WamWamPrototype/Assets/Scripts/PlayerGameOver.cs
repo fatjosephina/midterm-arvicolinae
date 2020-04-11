@@ -19,7 +19,7 @@ public class PlayerGameOver : MonoBehaviour
     {
         if (PlayerMovement.isGameOver)
         {
-            text.text = "Press Space to restart";
+            text.text = "Game over! Press space to restart";
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -28,7 +28,7 @@ public class PlayerGameOver : MonoBehaviour
 
         if (PlayerMovement.isGameWon)
         {
-            text.text = "Congratulations! You win!";
+            text.text = "Congratulations! You saved the day!";
         }
     }
 }

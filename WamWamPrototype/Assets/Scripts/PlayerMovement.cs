@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isOnSlope = false;
     private bool isAirborne = false;
     private bool isOnPlatform = false;
-    private bool hasIcepop = false;
+    public static bool hasIcepop = false;
     private bool hit = false;
     private float damage = 1.0f;
     private Rigidbody rb;
@@ -29,6 +29,9 @@ public class PlayerMovement : MonoBehaviour
     public AudioSource airWhoosh;
     public AudioSource bounce;
     public AudioSource yeehaw;
+    public AudioSource hurt;
+    public AudioSource snowballThrow;
+    public AudioSource winSound;
     public FloatValue currentHealth;
     public Signal playerHealthSignal;
 
@@ -37,70 +40,77 @@ public class PlayerMovement : MonoBehaviour
     {
         isGameOver = false;
         isGameWon = false;
+        hasIcepop = false;
         rb = GetComponent<Rigidbody>();
         PlayerAnimator = GetComponent<Animator>();
+        PlayerAnimator.SetBool("isGameWon", false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isOnSlope == false)
+        if (!isGameWon && !isGameOver)
         {
-            GetComponent<SphereCollider>().material = normalMaterial;
-            horizontalInput = Input.GetAxis("Horizontal");
-            forwardInput = Input.GetAxis("Vertical");
-            transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed * forwardInput);
-            transform.Rotate(Vector3.up, Time.deltaTime * turnSpeed * horizontalInput);
-        }
-        else
-        {
-            if (!slide.isPlaying && !isAirborne)
+            if (isOnSlope == false)
             {
-                slide.Play();
+                GetComponent<SphereCollider>().material = normalMaterial;
+                horizontalInput = Input.GetAxis("Horizontal");
+                forwardInput = Input.GetAxis("Vertical");
+                transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed * forwardInput);
+                transform.Rotate(Vector3.up, Time.deltaTime * turnSpeed * horizontalInput);
             }
-            GetComponent<SphereCollider>().material = slipperyMaterial;
-            horizontalInput = Input.GetAxis("Horizontal");
-            rb.AddRelativeForce(Vector3.forward * Time.deltaTime * slopeSpeed, ForceMode.Impulse);
-            // transform.Translate(Vector3.forward * Time.deltaTime * slopeSpeed);
-            transform.Translate(Vector3.right * Time.deltaTime * moveSpeed * horizontalInput);
-        }
+            else
+            {
+                if (!slide.isPlaying && !isAirborne)
+                {
+                    slide.Play();
+                }
+                GetComponent<SphereCollider>().material = slipperyMaterial;
+                horizontalInput = Input.GetAxis("Horizontal");
+                rb.AddRelativeForce(Vector3.forward * Time.deltaTime * slopeSpeed, ForceMode.Impulse);
+                // transform.Translate(Vector3.forward * Time.deltaTime * slopeSpeed);
+                transform.Translate(Vector3.right * Time.deltaTime * moveSpeed * horizontalInput);
+            }
 
-        if (!isAirborne && isOnPlatform && hasIcepop)
-        {
-            if (Input.GetKeyUp(KeyCode.Space))
+            if (!isAirborne && isOnPlatform && hasIcepop)
             {
-                Instantiate(snowball, transform.position + transform.forward, transform.rotation);
+                if (Input.GetKeyUp(KeyCode.Space))
+                {
+                    Instantiate(snowball, transform.position + transform.forward, transform.rotation);
+                    snowballThrow.Play();
 
+                }
             }
-        }
 
-        if (hit == true)
-        {
-            currentHealth.runtimeValue -= damage;
-            playerHealthSignal.Raise();
-            if (currentHealth.runtimeValue > 0)
+            if (hit == true)
             {
-                rb.velocity = Vector3.zero;
-                rb.AddRelativeForce(Vector3.up * Time.deltaTime * knockSpeed, ForceMode.Impulse);
-                rb.AddRelativeForce(Vector3.back * Time.deltaTime * knockSpeed, ForceMode.Impulse);
-            }
-            else 
-            {
-                isGameOver = true;
-            }
+                currentHealth.runtimeValue -= damage;
+                playerHealthSignal.Raise();
+                hurt.Play();
+                if (currentHealth.runtimeValue > 0)
+                {
+                    rb.velocity = Vector3.zero;
+                    rb.AddRelativeForce(Vector3.up * Time.deltaTime * knockSpeed, ForceMode.Impulse);
+                    rb.AddRelativeForce(Vector3.back * Time.deltaTime * knockSpeed, ForceMode.Impulse);
+                }
+                else
+                {
+                    isGameOver = true;
+                }
                 hit = false;
-        }
+            }
 
-        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
-        {
-            PlayerAnimator.SetBool("forwardArrowPressed", false);
-            PlayerAnimator.SetBool("backArrowPressed", true);
-        }
+            if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+            {
+                PlayerAnimator.SetBool("forwardArrowPressed", false);
+                PlayerAnimator.SetBool("backArrowPressed", true);
+            }
 
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
-        {
-            PlayerAnimator.SetBool("backArrowPressed", false);
-            PlayerAnimator.SetBool("forwardArrowPressed", true);
+            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+            {
+                PlayerAnimator.SetBool("backArrowPressed", false);
+                PlayerAnimator.SetBool("forwardArrowPressed", true);
+            }
         }
     }
 
@@ -144,6 +154,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.gameObject.CompareTag("EternalIce"))
         {
+            winSound.Play();
+            PlayerAnimator.SetBool("isGameWon", true);
             isGameWon = true;
             Destroy(other.gameObject);
         }
