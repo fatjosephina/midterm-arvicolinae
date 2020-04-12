@@ -11,7 +11,6 @@ public class HeartManager : MonoBehaviour
     private float numberOfHearts = 6.0f;
     public FloatValue playerCurrentHealth;
 
-    // Start is called before the first frame update
     void Start()
     {
         InitializeHearts();

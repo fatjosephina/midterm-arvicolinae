@@ -7,12 +7,6 @@ public class WaterMovement : MonoBehaviour
     public float moveSpeed = 1.1f;
     private int frames = 0;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
     void Update()
     {
         frames++;
@@ -25,15 +19,6 @@ public class WaterMovement : MonoBehaviour
         {
             transform.Translate(Vector3.back * Time.deltaTime * moveSpeed);
         }
-
-        /*if (frames < 50 || frames > 150)
-        {
-            transform.Translate(Vector3.right * Time.deltaTime * moveSpeed);
-        }
-        else if (frames > 50 && frames < 150)
-        {
-            transform.Translate(Vector3.left * Time.deltaTime * moveSpeed);
-        }*/
 
         if (frames >= 200)
         {

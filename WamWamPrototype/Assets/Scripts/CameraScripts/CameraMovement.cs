@@ -4,17 +4,10 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-    // code source: https://www.youtube.com/watch?v=hRRqxrWQJQg (will provide better credit in final project)
-
-    [SerializeField]
-    private Transform target;
-
-    [SerializeField]
-    private Vector3 offsetPosition;
-
+    public Transform target;
+    public Vector3 offsetPosition;
     [SerializeField]
     private Space offsetPositionSpace = Space.Self;
-
     [SerializeField]
     private bool lookAt = true;
 
@@ -27,13 +20,6 @@ public class CameraMovement : MonoBehaviour
     {
         if (!PlayerMovement.isGameOver)
         {
-            if (target == null)
-            {
-                Debug.LogWarning("Missing target ref !", this);
-
-                return;
-            }
-
             if (offsetPositionSpace == Space.Self)
             {
                 transform.position = target.TransformPoint(offsetPosition);

@@ -10,7 +10,6 @@ public class CameraMusic : MonoBehaviour
     public AudioClip winMusic;
     public AudioClip lossMusic;
 
-    // Start is called before the first frame update
     void Start()
     {
         music = GetComponent<AudioSource>();
@@ -20,7 +19,6 @@ public class CameraMusic : MonoBehaviour
         music.Play();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (PlayerMovement.isGameWon)

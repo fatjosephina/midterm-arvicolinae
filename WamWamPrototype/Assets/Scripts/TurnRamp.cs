@@ -8,28 +8,6 @@ public class TurnRamp : MonoBehaviour
     public float turnAngle = 90.0f;
     private bool isTriggerEntered = false;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    /*private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            collision.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            collision.gameObject.transform.Rotate(0, -90, 0);
-            collision.gameObject.GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * Time.deltaTime * turnSpeed, ForceMode.Impulse);
-        }
-    }*/
-
     private void OnTriggerEnter(Collider other)
     {
         if (!isTriggerEntered)

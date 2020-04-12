@@ -9,19 +9,11 @@ public class Snowball : MonoBehaviour
     private Vector3 direction = new Vector3(0, 0.5f, 1.0f);
     private AudioSource snowballSplat;
 
-    // Start is called before the first frame update
     void Start()
     {
         snowballRb = GetComponent<Rigidbody>();
-        // rb.AddRelativeForce(Vector3.forward * Time.deltaTime * moveSpeed);
         snowballRb.AddRelativeForce(direction * moveSpeed, ForceMode.Impulse);
         snowballSplat = GameObject.Find("SnowballSplat").GetComponent<AudioSource>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     private void OnCollisionEnter(Collision collision)

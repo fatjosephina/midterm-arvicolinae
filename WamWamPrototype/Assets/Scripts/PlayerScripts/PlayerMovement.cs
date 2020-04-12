@@ -8,16 +8,16 @@ public class PlayerMovement : MonoBehaviour
     private float forwardInput;
     public float moveSpeed = 5.0f;
     public float turnSpeed = 45.0f;
-    public float slopeSpeed = 5.0f;
+    public float slopeSpeed = 10.0f;
     public float knockSpeed = 250.0f;
+    private float angularDrag = 9999.0f;
     private bool isOnSlope = false;
     private bool isAirborne = false;
     private bool isOnPlatform = false;
     public static bool hasIcepop = false;
     private bool hit = false;
-    private float damage = 1.0f;
+    private readonly float damage = 1.0f;
     private Rigidbody rb;
-    private Animator PlayerAnimator;
     public static bool isGameOver = false;
     public static bool isGameWon = false;
 
@@ -35,86 +35,88 @@ public class PlayerMovement : MonoBehaviour
     public FloatValue currentHealth;
     public Signal playerHealthSignal;
 
-    // Start is called before the first frame update
     void Start()
     {
         isGameOver = false;
         isGameWon = false;
         hasIcepop = false;
         rb = GetComponent<Rigidbody>();
-        rb.angularDrag = 9999;
-        PlayerAnimator = GetComponent<Animator>();
-        PlayerAnimator.SetBool("isGameWon", false);
+        rb.angularDrag = angularDrag;
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+        if (!isOnSlope)
         {
-            PlayerAnimator.SetBool("forwardArrowPressed", false);
-            PlayerAnimator.SetBool("backArrowPressed", true);
+            horizontalInput = Input.GetAxis("Horizontal");
+            forwardInput = Input.GetAxis("Vertical");
         }
-
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+        else
         {
-            PlayerAnimator.SetBool("backArrowPressed", false);
-            PlayerAnimator.SetBool("forwardArrowPressed", true);
+            horizontalInput = Input.GetAxis("Horizontal");
+        }
+        if (!isGameWon && !isGameOver)
+        {
+            MovePlayer();
+
+            CheckForPowerup();
+
+            CheckIfHit();
         }
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    private void MovePlayer()
     {
-        if (!isGameWon && !isGameOver)
+        if (!isOnSlope)
         {
-            if (isOnSlope == false)
+            GetComponent<SphereCollider>().material = normalMaterial;
+            Vector3 forwardMovement = Vector3.forward * Time.deltaTime * moveSpeed * forwardInput;
+            transform.Translate(forwardMovement);
+            transform.Rotate(Vector3.up, Time.deltaTime * turnSpeed * horizontalInput);
+        }
+        else
+        {
+            if (!slide.isPlaying && !isAirborne)
             {
-                GetComponent<SphereCollider>().material = normalMaterial;
-                horizontalInput = Input.GetAxis("Horizontal");
-                forwardInput = Input.GetAxis("Vertical");
-                transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed * forwardInput);
-                transform.Rotate(Vector3.up, Time.deltaTime * turnSpeed * horizontalInput);
+                slide.Play();
+            }
+            GetComponent<SphereCollider>().material = slipperyMaterial;
+            rb.AddRelativeForce(Vector3.forward * Time.deltaTime * slopeSpeed, ForceMode.Impulse);
+            Vector3 horizontalMovement = Vector3.right * Time.deltaTime * moveSpeed * horizontalInput;
+            transform.Translate(horizontalMovement);
+        }
+    }
+
+    private void CheckForPowerup()
+    {
+        if (!isAirborne && isOnPlatform && hasIcepop)
+        {
+            if (Input.GetKeyUp(KeyCode.Space))
+            {
+                Instantiate(snowball, transform.position + transform.forward, transform.rotation);
+                snowballThrow.Play();
+            }
+        }
+    }
+
+    private void CheckIfHit()
+    {
+        if (hit == true)
+        {
+            currentHealth.runtimeValue -= damage;
+            playerHealthSignal.Raise();
+            hurt.Play();
+            if (currentHealth.runtimeValue > 0)
+            {
+                rb.velocity = Vector3.zero;
+                rb.AddRelativeForce(Vector3.up * Time.deltaTime * knockSpeed, ForceMode.Impulse);
+                rb.AddRelativeForce(Vector3.back * Time.deltaTime * knockSpeed, ForceMode.Impulse);
             }
             else
             {
-                if (!slide.isPlaying && !isAirborne)
-                {
-                    slide.Play();
-                }
-                GetComponent<SphereCollider>().material = slipperyMaterial;
-                horizontalInput = Input.GetAxis("Horizontal");
-                rb.AddRelativeForce(Vector3.forward * Time.deltaTime * slopeSpeed, ForceMode.Impulse);
-                // transform.Translate(Vector3.forward * Time.deltaTime * slopeSpeed);
-                transform.Translate(Vector3.right * Time.deltaTime * moveSpeed * horizontalInput);
+                isGameOver = true;
             }
-
-            if (!isAirborne && isOnPlatform && hasIcepop)
-            {
-                if (Input.GetKeyUp(KeyCode.Space))
-                {
-                    Instantiate(snowball, transform.position + transform.forward, transform.rotation);
-                    snowballThrow.Play();
-
-                }
-            }
-
-            if (hit == true)
-            {
-                currentHealth.runtimeValue -= damage;
-                playerHealthSignal.Raise();
-                hurt.Play();
-                if (currentHealth.runtimeValue > 0)
-                {
-                    rb.velocity = Vector3.zero;
-                    rb.AddRelativeForce(Vector3.up * Time.deltaTime * knockSpeed, ForceMode.Impulse);
-                    rb.AddRelativeForce(Vector3.back * Time.deltaTime * knockSpeed, ForceMode.Impulse);
-                }
-                else
-                {
-                    isGameOver = true;
-                }
-                hit = false;
-            }
+            hit = false;
         }
     }
 
@@ -160,7 +162,6 @@ public class PlayerMovement : MonoBehaviour
         if (other.gameObject.CompareTag("EternalIce"))
         {
             winSound.Play();
-            PlayerAnimator.SetBool("isGameWon", true);
             isGameWon = true;
             Destroy(other.gameObject);
         }
@@ -184,10 +185,6 @@ public class PlayerMovement : MonoBehaviour
         {
             hasIcepop = true;
             Destroy(other.gameObject);
-        }
-        else
-        {
-            Debug.Log("Trigger enter");
         }
     }
 }
