@@ -6,6 +6,7 @@ public class Fox : MonoBehaviour
 {
     private Rigidbody foxRb;
     private Transform target;
+    private Quaternion startRotation;
     public float chaseRadius;
     public float attackRadius;
     public float moveSpeed = 4.5f;
@@ -17,6 +18,7 @@ public class Fox : MonoBehaviour
     void Start()
     {
         foxRb = GetComponent<Rigidbody>();
+        startRotation = gameObject.transform.rotation;
         target = GameObject.FindWithTag("Player").transform;
         foxYelp = GameObject.Find("FoxYelp").GetComponent<AudioSource>();
     }
@@ -48,6 +50,7 @@ public class Fox : MonoBehaviour
         else
         {
             foxBarkHasPlayed = false;
+            gameObject.transform.rotation = startRotation;
         }
     }
 

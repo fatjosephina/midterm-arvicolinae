@@ -5,7 +5,9 @@ using UnityEngine;
 public class TurnRamp : MonoBehaviour
 {
     private float turnSpeed = 90.0f;
-    private float turnAngle = 1;
+    public float turnAngle = 90.0f;
+    private bool isTriggerEntered = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,11 +32,15 @@ public class TurnRamp : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (!isTriggerEntered)
         {
-            other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            other.gameObject.transform.Rotate(0, -90, 0);
-            other.gameObject.GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * Time.deltaTime * turnSpeed, ForceMode.Impulse);
+            if (other.gameObject.CompareTag("Player"))
+            {
+                other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                other.gameObject.transform.Rotate(0, turnAngle, 0);
+                other.gameObject.GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * Time.deltaTime * turnSpeed, ForceMode.Impulse);
+                isTriggerEntered = true;
+            }
         }
     }
 }

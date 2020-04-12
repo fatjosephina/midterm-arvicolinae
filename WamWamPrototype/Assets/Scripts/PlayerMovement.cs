@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     private float forwardInput;
     public float moveSpeed = 5.0f;
     public float turnSpeed = 45.0f;
-    public float slopeSpeed = 7.0f;
+    public float slopeSpeed = 5.0f;
     public float knockSpeed = 250.0f;
     private bool isOnSlope = false;
     private bool isAirborne = false;
@@ -42,12 +42,28 @@ public class PlayerMovement : MonoBehaviour
         isGameWon = false;
         hasIcepop = false;
         rb = GetComponent<Rigidbody>();
+        rb.angularDrag = 9999;
         PlayerAnimator = GetComponent<Animator>();
         PlayerAnimator.SetBool("isGameWon", false);
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+        {
+            PlayerAnimator.SetBool("forwardArrowPressed", false);
+            PlayerAnimator.SetBool("backArrowPressed", true);
+        }
+
+        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+        {
+            PlayerAnimator.SetBool("backArrowPressed", false);
+            PlayerAnimator.SetBool("forwardArrowPressed", true);
+        }
+    }
+
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (!isGameWon && !isGameOver)
         {
@@ -99,18 +115,6 @@ public class PlayerMovement : MonoBehaviour
                 }
                 hit = false;
             }
-
-            if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
-            {
-                PlayerAnimator.SetBool("forwardArrowPressed", false);
-                PlayerAnimator.SetBool("backArrowPressed", true);
-            }
-
-            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
-            {
-                PlayerAnimator.SetBool("backArrowPressed", false);
-                PlayerAnimator.SetBool("forwardArrowPressed", true);
-            }
         }
     }
 
@@ -128,6 +132,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (collision.gameObject.CompareTag("IcePlatform"))
         {
+            rb.velocity = Vector3.zero;
             isOnPlatform = true;
         }
         else
