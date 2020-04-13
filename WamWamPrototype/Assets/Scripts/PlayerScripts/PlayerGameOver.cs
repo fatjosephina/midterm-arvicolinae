@@ -28,7 +28,11 @@ public class PlayerGameOver : MonoBehaviour
 
         if (PlayerMovement.isGameWon)
         {
-            text.text = "Congratulations! You saved the day!";
+            text.text = "Congratulations! You saved the day! Press space to continue";
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                SceneManager.LoadScene("CreditScene");
+            }
         }
     }
 }
