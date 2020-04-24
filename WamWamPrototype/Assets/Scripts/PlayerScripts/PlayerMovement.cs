@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     private float horizontalInput;
     private float forwardInput;
+    private Vector3 startRotation = new Vector3(0, 180, 0);
     public float moveSpeed = 5.0f;
     public float turnSpeed = 45.0f;
     public float slopeSpeed = 10.0f;
@@ -42,14 +43,15 @@ public class PlayerMovement : MonoBehaviour
         hasIcepop = false;
         rb = GetComponent<Rigidbody>();
         rb.angularDrag = angularDrag;
+        transform.rotation = Quaternion.Euler(startRotation);
     }
 
     private void Update()
     {
         if (!isOnSlope)
         {
-            horizontalInput = Input.GetAxis("Horizontal");
-            forwardInput = Input.GetAxis("Vertical");
+            horizontalInput = Input.GetAxisRaw("Horizontal");
+            forwardInput = Input.GetAxisRaw("Vertical");
         }
         else
         {
@@ -67,12 +69,15 @@ public class PlayerMovement : MonoBehaviour
 
     private void MovePlayer()
     {
+        Vector3 movement;
         if (!isOnSlope)
         {
             GetComponent<SphereCollider>().material = normalMaterial;
-            Vector3 forwardMovement = Vector3.forward * Time.deltaTime * moveSpeed * forwardInput;
-            transform.Translate(forwardMovement);
-            transform.Rotate(Vector3.up, Time.deltaTime * turnSpeed * horizontalInput);
+            movement = new Vector3(horizontalInput, 0, forwardInput);
+            if (horizontalInput != 0 || forwardInput != 0)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movement), turnSpeed);
+            }
         }
         else
         {
@@ -82,9 +87,9 @@ public class PlayerMovement : MonoBehaviour
             }
             GetComponent<SphereCollider>().material = slipperyMaterial;
             rb.AddRelativeForce(Vector3.forward * Time.deltaTime * slopeSpeed, ForceMode.Impulse);
-            Vector3 horizontalMovement = Vector3.right * Time.deltaTime * moveSpeed * horizontalInput;
-            transform.Translate(horizontalMovement);
+            movement = new Vector3(horizontalInput, 0, 0);
         }
+        transform.Translate(movement.normalized * Time.deltaTime * moveSpeed, Space.World);
     }
 
     private void CheckForPowerup()

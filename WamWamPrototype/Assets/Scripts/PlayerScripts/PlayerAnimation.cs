@@ -16,7 +16,7 @@ public class PlayerAnimation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+        /*if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
         {
             PlayerAnimator.SetBool("forwardArrowPressed", false);
             PlayerAnimator.SetBool("backArrowPressed", true);
@@ -26,7 +26,7 @@ public class PlayerAnimation : MonoBehaviour
         {
             PlayerAnimator.SetBool("backArrowPressed", false);
             PlayerAnimator.SetBool("forwardArrowPressed", true);
-        }
+        }*/
 
         if (PlayerMovement.isGameWon)
         {

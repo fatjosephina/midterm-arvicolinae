@@ -13,7 +13,7 @@ public class CameraMovement : MonoBehaviour
 
     private void LateUpdate()
     {
-        Refresh();
+        // Refresh();
     }
 
     public void Refresh()
