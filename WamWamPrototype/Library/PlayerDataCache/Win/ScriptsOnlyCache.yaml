@@ -3,6 +3,7 @@ ScriptsOnlyBuild:
     Assembly-CSharp.dll:
     - CameraMovement
     - CameraMusic
+    - CameraSwitch
     - FloatValue
     - Fox
     - HeartManager
@@ -10,7 +11,9 @@ ScriptsOnlyBuild:
     - LoadGameScene
     - MenuRotateWamWam
     - PlayerAnimation
+    - PlayerDialogue
     - PlayerGameOver
+    - PlayerHint
     - PlayerMovement
     - SealBounce
     - Signal
@@ -73,15 +76,15 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 9722}
     - Class: 114
-      Script: {instanceID: 9932}
+      Script: {instanceID: 9934}
     - Class: 114
-      Script: {instanceID: 10484}
+      Script: {instanceID: 10486}
     - Class: 114
-      Script: {instanceID: 11546}
+      Script: {instanceID: 11552}
     - Class: 114
-      Script: {instanceID: 11570}
+      Script: {instanceID: 11576}
     - Class: 114
-      Script: {instanceID: 12050}
+      Script: {instanceID: 12056}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -144,47 +147,53 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 9866}
     - Class: 114
-      Script: {instanceID: 9932}
+      Script: {instanceID: 9902}
     - Class: 114
-      Script: {instanceID: 9986}
+      Script: {instanceID: 9934}
     - Class: 114
-      Script: {instanceID: 10222}
+      Script: {instanceID: 9988}
     - Class: 114
-      Script: {instanceID: 10274}
+      Script: {instanceID: 10224}
     - Class: 114
-      Script: {instanceID: 10380}
+      Script: {instanceID: 10276}
     - Class: 114
-      Script: {instanceID: 10452}
+      Script: {instanceID: 10382}
     - Class: 114
-      Script: {instanceID: 10470}
+      Script: {instanceID: 10454}
     - Class: 114
-      Script: {instanceID: 10484}
+      Script: {instanceID: 10472}
     - Class: 114
-      Script: {instanceID: 10542}
+      Script: {instanceID: 10486}
     - Class: 114
-      Script: {instanceID: 11014}
+      Script: {instanceID: 10544}
     - Class: 114
-      Script: {instanceID: 11250}
+      Script: {instanceID: 10656}
     - Class: 114
-      Script: {instanceID: 11268}
+      Script: {instanceID: 11018}
     - Class: 114
-      Script: {instanceID: 11348}
+      Script: {instanceID: 11254}
     - Class: 114
-      Script: {instanceID: 11570}
+      Script: {instanceID: 11272}
     - Class: 114
-      Script: {instanceID: 11660}
+      Script: {instanceID: 11352}
     - Class: 114
-      Script: {instanceID: 11742}
+      Script: {instanceID: 11420}
     - Class: 114
-      Script: {instanceID: 11764}
+      Script: {instanceID: 11576}
     - Class: 114
-      Script: {instanceID: 11786}
+      Script: {instanceID: 11666}
     - Class: 114
-      Script: {instanceID: 11982}
+      Script: {instanceID: 11748}
     - Class: 114
-      Script: {instanceID: 11994}
+      Script: {instanceID: 11770}
     - Class: 114
-      Script: {instanceID: 12050}
+      Script: {instanceID: 11792}
+    - Class: 114
+      Script: {instanceID: 11988}
+    - Class: 114
+      Script: {instanceID: 12000}
+    - Class: 114
+      Script: {instanceID: 12056}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -235,19 +244,19 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 9722}
     - Class: 114
-      Script: {instanceID: 9932}
+      Script: {instanceID: 9934}
     - Class: 114
-      Script: {instanceID: 10484}
+      Script: {instanceID: 10486}
     - Class: 114
-      Script: {instanceID: 10958}
+      Script: {instanceID: 10962}
     - Class: 114
-      Script: {instanceID: 11304}
+      Script: {instanceID: 11308}
     - Class: 114
-      Script: {instanceID: 11546}
+      Script: {instanceID: 11552}
     - Class: 114
-      Script: {instanceID: 11570}
+      Script: {instanceID: 11576}
     - Class: 114
-      Script: {instanceID: 12050}
+      Script: {instanceID: 12056}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -311,6 +320,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: GroupTrack
+  - hash:
+      serializedVersion: 2
+      Hash: be15412e5dbc0c32065d56f3f62a1638
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: CameraSwitch
   - hash:
       serializedVersion: 2
       Hash: a5781dc71a671b1ad2b38de19f24b71f
@@ -517,6 +532,12 @@ ScriptsOnlyBuild:
     className: Selectable
   - hash:
       serializedVersion: 2
+      Hash: 6e05833c009692556735862be2adabb5
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: PlayerHint
+  - hash:
+      serializedVersion: 2
       Hash: b3ab2106268377ffe25dd18ac23dca28
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
@@ -649,7 +670,7 @@ ScriptsOnlyBuild:
     className: LoadGameScene
   - hash:
       serializedVersion: 2
-      Hash: 6ce02d32355485c961b4c4e229b8b7e2
+      Hash: 16a3a2f15c83e13461142fbd84f18805
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: CameraMovement
@@ -665,6 +686,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.ProBuilder.dll
     namespaceName: UnityEngine.ProBuilder
     className: Entity
+  - hash:
+      serializedVersion: 2
+      Hash: b87ad0273f8805a6491d6f1f0ed272e6
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: PlayerDialogue
   - hash:
       serializedVersion: 2
       Hash: 3b760e6526e13f7504f59e210145899a
@@ -703,7 +730,7 @@ ScriptsOnlyBuild:
     className: TurnRamp
   - hash:
       serializedVersion: 2
-      Hash: 579a5533306ce4598aaf999a98bebc57
+      Hash: 9afad3c21a954384d95f7e41120a9c11
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerMovement
@@ -832,4 +859,4 @@ ScriptsOnlyBuild:
   - Assets/Scenes/StartMenuScene.unity
   - Assets/Scenes/GameScene.unity
   - Assets/Scenes/CreditScene.unity
-  playerPath: C:/Users/17345/Documents/GitHub/midterm-arvicolinae/Builds/MidtermGameBuild/WamWamTheWinterWarrior.exe
+  playerPath: C:/Users/17345/Documents/GitHub/midterm-arvicolinae/Builds/FinalStep1Build/WamWamTheWinterWarrior.exe
