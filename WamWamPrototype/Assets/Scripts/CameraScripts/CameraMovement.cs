@@ -36,14 +36,14 @@ public class CameraMovement : MonoBehaviour
     float offsetXBackRight = -1.5f;
     float offsetXBackLeft = 1.5f;
 
-    private MoveState moveState = MoveState.Initial;
-    enum MoveState { Initial, MoveCameraRotation, StopCameraRotation, NONE, NEXT }
+    public MoveState moveState = MoveState.Initial;
+    public enum MoveState { Initial, MoveCameraRotation, StopCameraRotation, MidCameraRotation, NEXT }
 
     private void Start()
     {
         savedRotation = transform.rotation;
         saveOffsetPosition = offsetPosition;
-        playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
+        playerMovement = target.gameObject.GetComponent<PlayerMovement>();
     }
     private void LateUpdate()
     {
@@ -91,10 +91,8 @@ public class CameraMovement : MonoBehaviour
 
     bool TargetSideRotation()
     {
-        //float yTarget = target.transform.eulerAngles.y;
         float yTarget = target.transform.rotation.eulerAngles.y;
         yTarget = Mathf.Round(yTarget / 45) * 45;
-        Debug.Log(yTarget);
         if (yTarget != 0 && yTarget != 90 && yTarget != 180 && yTarget != 270)
         {
             return true;
@@ -105,7 +103,8 @@ public class CameraMovement : MonoBehaviour
         }
     }
 
-    // NEED TO KEEP CAMERA FOCUSED ON PLAYER WHEN BOUNCING ON SEAL
+    // NEED TO ACCOUNT FOR TRANSFORM CHANGING DUE TO NON-PLAYER INPUT
+    // NEED TO ADD LOCK-ON STATE
 
     public void Refresh()
     {
@@ -122,9 +121,13 @@ public class CameraMovement : MonoBehaviour
                 {
                     moveState = MoveState.MoveCameraRotation;
                 }
+                else if (playerMovement.isBouncing)
+                {
+                    moveState = MoveState.MidCameraRotation;
+                }
                 else
                 {
-                    if (moveState == MoveState.MoveCameraRotation)
+                    if (moveState == MoveState.MoveCameraRotation || moveState == MoveState.MidCameraRotation)
                     {
                         moveState = MoveState.StopCameraRotation;
                         zPressed = false;
@@ -132,7 +135,7 @@ public class CameraMovement : MonoBehaviour
                 }
             }
 
-            if (transform.position.y == yStartPosition && moveState != MoveState.MoveCameraRotation)
+            if (transform.position.y == yStartPosition && moveState != MoveState.MoveCameraRotation && moveState != MoveState.MidCameraRotation)
             {
                 moveState = MoveState.StopCameraRotation;
             }
@@ -142,7 +145,6 @@ public class CameraMovement : MonoBehaviour
                 moveState = MoveState.MoveCameraRotation;
             }
             Debug.Log(moveState);
-            Debug.Log(playerMovement.isOnPlatform);
 
             switch (moveState)
             {
@@ -151,14 +153,19 @@ public class CameraMovement : MonoBehaviour
                     break;
                 case MoveState.MoveCameraRotation:
                     offsetPosition = saveOffsetPosition;
-                    /*if (offsetPositionSpace == Space.Self)
-                    {*/
-                        transform.position = target.TransformPoint(offsetPosition);
-                    //}
+                    transform.position = target.TransformPoint(offsetPosition);
                     transform.LookAt(target);
+                    break;
+                case MoveState.MidCameraRotation:
+                    //Vector3 vector = new Vector3(0, 10, 0);
+                    //transform.position = target.position + target.TransformDirection(vector);
+                    //transform.LookAt(target);
                     break;
                 case MoveState.StopCameraRotation:
                     transform.position += playerMovement.translateChange;
+                    break;
+                default:
+                    moveState = MoveState.MoveCameraRotation;
                     break;
             }
         }

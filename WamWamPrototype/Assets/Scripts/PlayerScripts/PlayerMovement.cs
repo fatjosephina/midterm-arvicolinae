@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
     public bool isOnSlope = false;
     public bool isAirborne = false;
     public bool isOnPlatform = false;
+    public bool isBouncing = false;
     public static bool hasIcepop = false;
     private bool hit = false;
     private readonly float damage = 1.0f;
@@ -72,15 +73,7 @@ public class PlayerMovement : MonoBehaviour
 
             CheckIfHit();
         }
-        if (!isOnSlope)
-        {
-            postPosition = transform.position;
-        }
-        else
-        {
-            // Do something else here in addition
-            postPosition = rb.transform.position;
-        }
+        postPosition = transform.position;
 
         Vector3 diffPriorPost = postPosition - priorPosition;
         translateChange = diffPriorPost;
@@ -95,7 +88,10 @@ public class PlayerMovement : MonoBehaviour
         {
             GetComponent<SphereCollider>().material = normalMaterial;
             movement = new Vector3(horizontalInput, 0, forwardInput);
-            movement = cameraMovement.transform.TransformDirection(movement);
+            if (!isBouncing)
+            {
+                movement = cameraMovement.transform.TransformDirection(movement);
+            }
             movement.y = 0f;
             float moveRate = 0f;
             if (horizontalInput != 0 || forwardInput != 0)
@@ -183,6 +179,15 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             isOnSlope = true;
+        }
+
+        if(collision.gameObject.CompareTag("Seal"))
+        {
+            isBouncing = true;
+        }
+        else
+        {
+            isBouncing = false;
         }
 
         if (collision.gameObject.CompareTag("IcePlatform"))
