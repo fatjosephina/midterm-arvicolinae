@@ -18,9 +18,13 @@ public class CameraMovement : MonoBehaviour
     private float yRotation = 0f;
 
     public PlayerMovement playerMovement;
+    public GameObject textBoxManager;
+    private TextBoxManager managerScript;
+    private GameObject textBox;
+    private TextBox textBoxScript;
 
     private Vector3 saveOffsetPosition;
-    float offsetY = 1;
+    /*float offsetY = 1;
     float offsetZFaceForward = -2;
     float offsetZFaceBack = 2;
     float offsetZFaceLeftRight = 0;
@@ -34,20 +38,23 @@ public class CameraMovement : MonoBehaviour
     float offsetXForwardRight = -1.5f;
     float offsetXForwardLeft = 1.5f;
     float offsetXBackRight = -1.5f;
-    float offsetXBackLeft = 1.5f;
+    float offsetXBackLeft = 1.5f;*/
 
     public MoveState moveState = MoveState.Initial;
-    public enum MoveState { Initial, MoveCameraRotation, StopCameraRotation, MidCameraRotation, NEXT }
+    public enum MoveState { Initial, MoveCameraRotation, StopCameraRotation, MidCameraRotation, Reading }
 
     private void Start()
     {
         savedRotation = transform.rotation;
         saveOffsetPosition = offsetPosition;
         playerMovement = target.gameObject.GetComponent<PlayerMovement>();
+        managerScript = textBoxManager.GetComponent<TextBoxManager>();
+        moveState = MoveState.Initial;
     }
+
     private void LateUpdate()
     {
-        Debug.Log(playerMovement.isOnPlatform);
+        //Debug.Log(playerMovement.isOnPlatform);
         if (!gameStarted)
         {
             if (Input.anyKey)
@@ -110,9 +117,20 @@ public class CameraMovement : MonoBehaviour
     {
         if (!PlayerMovement.isGameOver)
         {
+            textBoxScript = managerScript.FindClosestTextBox(transform.position);
+            textBox = textBoxScript.gameObject;
+
             if (Input.GetKey(KeyCode.Z))
             {
-                moveState = MoveState.MoveCameraRotation;
+                Debug.Log(textBoxScript.playerInRange);
+                if (textBoxScript.playerInRange)
+                {
+                    moveState = MoveState.Reading;
+                }
+                else
+                {
+                    moveState = MoveState.MoveCameraRotation;
+                }
                 zPressed = true;
             }
             else
@@ -127,7 +145,7 @@ public class CameraMovement : MonoBehaviour
                 }
                 else
                 {
-                    if (moveState == MoveState.MoveCameraRotation || moveState == MoveState.MidCameraRotation)
+                    if (moveState != MoveState.Initial)
                     {
                         moveState = MoveState.StopCameraRotation;
                         zPressed = false;
@@ -135,7 +153,15 @@ public class CameraMovement : MonoBehaviour
                 }
             }
 
-            if (transform.position.y == yStartPosition && moveState != MoveState.MoveCameraRotation && moveState != MoveState.MidCameraRotation)
+            if (Input.GetKeyUp(KeyCode.Z))
+            {
+                if (textBoxScript.playerInRange)
+                {
+                    moveState = MoveState.MoveCameraRotation;
+                }
+            }
+
+            if (transform.position.y == yStartPosition && moveState == MoveState.Initial)
             {
                 moveState = MoveState.StopCameraRotation;
             }
@@ -163,6 +189,10 @@ public class CameraMovement : MonoBehaviour
                     break;
                 case MoveState.StopCameraRotation:
                     transform.position += playerMovement.translateChange;
+                    break;
+                case MoveState.Reading:
+                    //transform.position = target.TransformPoint(offsetPosition);
+                    transform.LookAt(textBox.transform);
                     break;
                 default:
                     moveState = MoveState.MoveCameraRotation;
