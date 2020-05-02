@@ -10,6 +10,7 @@ ScriptsOnlyBuild:
     - Icicle
     - LoadGameScene
     - MenuRotateWamWam
+    - PapaWam
     - PlayerAnimation
     - PlayerDialogue
     - PlayerGameOver
@@ -19,6 +20,8 @@ ScriptsOnlyBuild:
     - Signal
     - SignalListener
     - Snowball
+    - TextBox
+    - TextBoxManager
     - TurnRamp
     - WaterMovement
     Unity.ProBuilder.Editor.dll:
@@ -34,7 +37,6 @@ ScriptsOnlyBuild:
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
-    - UnityEditor.TestTools.TestRunner.TestListCacheData
     UnityEngine.UI.dll:
     - UnityEngine.EventSystems.EventSystem
     - UnityEngine.EventSystems.StandaloneInputModule
@@ -78,13 +80,17 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 9934}
     - Class: 114
-      Script: {instanceID: 10486}
+      Script: {instanceID: 10488}
     - Class: 114
-      Script: {instanceID: 11552}
+      Script: {instanceID: 10966}
     - Class: 114
-      Script: {instanceID: 11576}
+      Script: {instanceID: 11314}
     - Class: 114
-      Script: {instanceID: 12056}
+      Script: {instanceID: 11558}
+    - Class: 114
+      Script: {instanceID: 11582}
+    - Class: 114
+      Script: {instanceID: 12062}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -157,43 +163,49 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10276}
     - Class: 114
-      Script: {instanceID: 10382}
+      Script: {instanceID: 10352}
     - Class: 114
-      Script: {instanceID: 10454}
+      Script: {instanceID: 10384}
     - Class: 114
-      Script: {instanceID: 10472}
+      Script: {instanceID: 10456}
     - Class: 114
-      Script: {instanceID: 10486}
+      Script: {instanceID: 10474}
     - Class: 114
-      Script: {instanceID: 10544}
+      Script: {instanceID: 10488}
     - Class: 114
-      Script: {instanceID: 10656}
+      Script: {instanceID: 10546}
     - Class: 114
-      Script: {instanceID: 11018}
+      Script: {instanceID: 10658}
     - Class: 114
-      Script: {instanceID: 11254}
+      Script: {instanceID: 10852}
     - Class: 114
-      Script: {instanceID: 11272}
+      Script: {instanceID: 11022}
     - Class: 114
-      Script: {instanceID: 11352}
+      Script: {instanceID: 11118}
     - Class: 114
-      Script: {instanceID: 11420}
+      Script: {instanceID: 11260}
     - Class: 114
-      Script: {instanceID: 11576}
+      Script: {instanceID: 11278}
     - Class: 114
-      Script: {instanceID: 11666}
+      Script: {instanceID: 11358}
     - Class: 114
-      Script: {instanceID: 11748}
+      Script: {instanceID: 11426}
     - Class: 114
-      Script: {instanceID: 11770}
+      Script: {instanceID: 11582}
     - Class: 114
-      Script: {instanceID: 11792}
+      Script: {instanceID: 11672}
     - Class: 114
-      Script: {instanceID: 11988}
+      Script: {instanceID: 11754}
     - Class: 114
-      Script: {instanceID: 12000}
+      Script: {instanceID: 11776}
     - Class: 114
-      Script: {instanceID: 12056}
+      Script: {instanceID: 11798}
+    - Class: 114
+      Script: {instanceID: 11994}
+    - Class: 114
+      Script: {instanceID: 12006}
+    - Class: 114
+      Script: {instanceID: 12062}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -246,17 +258,17 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 9934}
     - Class: 114
-      Script: {instanceID: 10486}
+      Script: {instanceID: 10488}
     - Class: 114
-      Script: {instanceID: 10962}
+      Script: {instanceID: 10966}
     - Class: 114
-      Script: {instanceID: 11308}
+      Script: {instanceID: 11314}
     - Class: 114
-      Script: {instanceID: 11552}
+      Script: {instanceID: 11558}
     - Class: 114
-      Script: {instanceID: 11576}
+      Script: {instanceID: 11582}
     - Class: 114
-      Script: {instanceID: 12056}
+      Script: {instanceID: 12062}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -466,6 +478,12 @@ ScriptsOnlyBuild:
     className: BezierShape
   - hash:
       serializedVersion: 2
+      Hash: 0c7b559c825781989b9583243536a735
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: PapaWam
+  - hash:
+      serializedVersion: 2
       Hash: aba7b2852ef61d175dd9602e7723d5e5
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
@@ -574,6 +592,12 @@ ScriptsOnlyBuild:
     className: TMP_SpriteAnimator
   - hash:
       serializedVersion: 2
+      Hash: 7d39a4599a8c0da9f08e93aa31a9497a
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: TextBoxManager
+  - hash:
+      serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: UnityEngine.TestRunner.dll
     namespaceName: UnityEngine.TestTools.TestRunner.Callbacks
@@ -608,6 +632,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: VerticalLayoutGroup
+  - hash:
+      serializedVersion: 2
+      Hash: 5baa6f219d79e0240970684f0bd75237
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: TextBox
   - hash:
       serializedVersion: 2
       Hash: d6a8e9bec3160a152b9b2710593d3caa
@@ -670,7 +700,7 @@ ScriptsOnlyBuild:
     className: LoadGameScene
   - hash:
       serializedVersion: 2
-      Hash: 16a3a2f15c83e13461142fbd84f18805
+      Hash: 1b8d81a92c3804cfa1b1481219282ba3
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: CameraMovement
@@ -688,7 +718,7 @@ ScriptsOnlyBuild:
     className: Entity
   - hash:
       serializedVersion: 2
-      Hash: b87ad0273f8805a6491d6f1f0ed272e6
+      Hash: a4b60c750caa857dcec1c32ab9a7d76a
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerDialogue
@@ -859,4 +889,4 @@ ScriptsOnlyBuild:
   - Assets/Scenes/StartMenuScene.unity
   - Assets/Scenes/GameScene.unity
   - Assets/Scenes/CreditScene.unity
-  playerPath: C:/Users/17345/Documents/GitHub/midterm-arvicolinae/Builds/FinalStep1Build/WamWamTheWinterWarrior.exe
+  playerPath: C:/Users/17345/Documents/GitHub/midterm-arvicolinae/Builds/FinalStep2Build/WamWamTheWinterWarrior.exe
