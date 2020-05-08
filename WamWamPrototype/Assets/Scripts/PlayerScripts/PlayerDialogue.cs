@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerDialogue : MonoBehaviour
 {
+    public AudioSource papaWam;
+    private bool papaWamPlayed = false;
     public GameObject playerHint;
     public GameObject spacePrompt;
     private CameraMovement cameraMovement;
@@ -67,10 +69,19 @@ public class PlayerDialogue : MonoBehaviour
             if (playerHint.activeInHierarchy && cameraMovement.moveState == CameraMovement.MoveState.Reading)
             {
                 playerHint.SetActive(false);
+                if (!papaWamPlayed)
+                {
+                    papaWam.Play();
+                    papaWamPlayed = true;
+                }
             }
             else if (!playerHint.activeInHierarchy && cameraMovement.moveState != CameraMovement.MoveState.Reading)
             {
                 playerHint.SetActive(true);
+                if (papaWamPlayed)
+                {
+                    papaWamPlayed = false;
+                }
             }
         }
     }

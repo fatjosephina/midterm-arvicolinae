@@ -13,6 +13,7 @@ TagManager:
   - Icepop
   - IcePlatform
   - PapaWam
+  - GameMaster
   layers:
   - Default
   - TransparentFX

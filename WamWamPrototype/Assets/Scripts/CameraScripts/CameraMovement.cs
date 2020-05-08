@@ -111,7 +111,6 @@ public class CameraMovement : MonoBehaviour
     }
 
     // NEED TO ACCOUNT FOR TRANSFORM CHANGING DUE TO NON-PLAYER INPUT
-    // NEED TO ADD LOCK-ON STATE
 
     public void Refresh()
     {
@@ -163,6 +162,7 @@ public class CameraMovement : MonoBehaviour
 
             if (transform.position.y == yStartPosition && moveState == MoveState.Initial)
             {
+                gameStarted = true;
                 moveState = MoveState.StopCameraRotation;
             }
 
