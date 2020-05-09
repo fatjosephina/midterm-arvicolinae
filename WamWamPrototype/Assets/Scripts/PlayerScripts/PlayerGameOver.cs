@@ -8,27 +8,23 @@ public class PlayerGameOver : MonoBehaviour
 {
     public Text text;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
         if (PlayerMovement.isGameOver)
         {
-            text.text = "Game over! Press space to restart";
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (!PlayerMovement.isGameWon)
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                text.text = "Game over! Press space to restart";
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                }
             }
         }
 
         if (PlayerMovement.isGameWon)
         {
-            text.text = "Congratulations! You saved the day! Press space to continue";
+            text.text = "Congratulations! You saved the day!\n Press space to continue";
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 SceneManager.LoadScene("CreditScene");

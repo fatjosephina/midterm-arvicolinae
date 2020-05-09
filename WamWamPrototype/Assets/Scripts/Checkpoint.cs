@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
 {
+    public string checkPointStr;
     public AudioSource papaWam;
     public AudioSource getCheckpoint;
     public Vector3 offsetPosition;
@@ -18,16 +19,20 @@ public class Checkpoint : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            papaWam.Play();
             gameMaster.lastCheckpointPos = transform.position + offsetPosition;
             Transform flag = transform.Find("Flag");
             if (!flag.gameObject.activeInHierarchy)
             {
                 flag.gameObject.SetActive(true);
-                getCheckpoint.Play();
-                fingers = transform.Find("Fingers");
-                fingers.gameObject.SetActive(true);
-                StartCoroutine(TurnCo());
+                if (gameMaster.checkPointStr != checkPointStr)
+                {
+                    papaWam.Play();
+                    getCheckpoint.Play();
+                    fingers = transform.Find("Fingers");
+                    fingers.gameObject.SetActive(true);
+                    StartCoroutine(TurnCo());
+                    gameMaster.checkPointStr = checkPointStr;
+                }
             }
         }
     }

@@ -199,7 +199,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionExit(Collision collision)
     {
-        isAirborne = true;
+        if (!collision.gameObject.CompareTag("Checkpoint") && !collision.gameObject.CompareTag("PapaWam"))
+        {
+            isAirborne = true;
+        }
 
         if (collision.gameObject.CompareTag("Slope"))
         {
@@ -225,6 +228,11 @@ public class PlayerMovement : MonoBehaviour
             winSound.Play();
             isGameWon = true;
             Destroy(other.gameObject);
+        }
+        else if (other.gameObject.CompareTag("Finish"))
+        {
+            winSound.Play();
+            isGameWon = true;
         }
         else if (other.gameObject.CompareTag("Icicle"))
         {

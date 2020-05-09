@@ -31,7 +31,10 @@ public class Snowball : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Destroy(gameObject);
+        if (!other.CompareTag("Checkpoint"))
+        {
+            Destroy(gameObject);
+        }
         if (other.gameObject.CompareTag("Fox"))
         {
             Destroy(other.transform.parent.gameObject);
