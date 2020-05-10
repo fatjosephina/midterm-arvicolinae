@@ -9,9 +9,22 @@ public class LoadGameScene : MonoBehaviour
     {
         SceneManager.LoadScene("GameScene");
     }
+    public void LoadTutorial()
+    {
+        SceneManager.LoadScene("TutorialScene");
+    }
+    public void LoadPregame()
+    {
+        SceneManager.LoadScene("PregameScene");
+    }
 
     public void ExitGame()
     {
         Application.Quit();
+    }
+
+    public void MainMenu()
+    {
+        SceneManager.LoadScene("StartMenuScene");
     }
 }
